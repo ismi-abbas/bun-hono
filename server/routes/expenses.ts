@@ -42,8 +42,6 @@ export const expensesRoute = new Hono()
 			total: fakeExpenses.reduce((a, b) => a + b.amount, 0),
 		};
 
-		console.log(totalSpent);
-
 		return c.json(totalSpent);
 	})
 	.delete("/:id{[0-9]+}", (c) => {

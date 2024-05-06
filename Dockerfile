@@ -12,7 +12,6 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
@@ -24,9 +23,18 @@ RUN apt-get update -qq && \
 COPY --link bun.lockb package.json ./
 RUN bun install --ci
 
+COPY --link frontend/bun.lockb frontend/package.json ./frontend/
+RUN cd frontend && bun install --ci
+
 # Copy application code
 COPY --link . .
 
+# Change to frontend directory and build the frontend app
+WORKDIR /app/frontend
+RUN bun run build
+
+# Remove all files in frontend except for the dist folder
+RUN find . -mindepth 1 ! -regex '^./dist\(/.*\)?' -delete
 
 # Final stage for app image
 FROM base
