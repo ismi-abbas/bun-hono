@@ -1,20 +1,21 @@
 {
-	"name": "bun-hono",
-	"module": "server/index.ts",
-	"type": "module",
-	"scripts": {
-		"start": "bun server/index.ts",
-		"dev": "bun --watch server/index.ts"
-	},
-	"devDependencies": {
-		"@types/bun": "latest"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
-	},
-	"dependencies": {
-		"@hono/zod-validator": "^0.2.1",
-		"hono": "^4.2.9",
-		"zod": "^3.23.6"
-	}
+  "name": "bun-hono",
+  "module": "server/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun server/index.ts",
+    "dev": "bun --watch server/index.ts"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.7",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.1",
+    "hono": "^4.2.9",
+    "zod": "^3.23.6"
+  }
 }
