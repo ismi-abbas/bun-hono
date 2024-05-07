@@ -47,7 +47,7 @@ export const expensesRoute = new Hono()
 	.delete("/:id{[0-9]+}", (c) => {
 		const id = Number.parseInt(c.req.param("id"));
 
-		const expense = fakeExpenses.findIndex((e) => e.id === Number(id));
+		const expense = fakeExpenses.findIndex((e) => e.id === id);
 
 		if (expense === -1) {
 			return c.notFound();
