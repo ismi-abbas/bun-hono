@@ -1,11 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
 	component: Index,
 });
 
@@ -44,8 +43,6 @@ function Index() {
 			)}
 
 			{isError && <p>Error</p>}
-
-			<Button className="bg-teal-700">Add Expense</Button>
 		</>
 	);
 }

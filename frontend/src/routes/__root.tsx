@@ -1,9 +1,14 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRouteWithContext, Link, Outlet } from "@tanstack/react-router";
 import "../index.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
+import { QueryClient } from "@tanstack/react-query";
 
-export const Route = createRootRoute({
+interface RouterContext {
+	queryClient: QueryClient;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
 	component: Root,
 });
 
@@ -26,11 +31,11 @@ function NavBar() {
 				<Link className="text-sm font-medium hover:underline" to="/expenses">
 					Expenses
 				</Link>
-				<Link
-					className="text-sm font-medium hover:underline"
-					to="/create-expense"
-				>
+				<Link className="text-sm font-medium hover:underline" to="/create-expense">
 					Create
+				</Link>
+				<Link className="text-sm font-medium hover:underline" to="/profile">
+					Profile
 				</Link>
 			</nav>
 			<div className="md:hidden">
@@ -68,7 +73,7 @@ function Root() {
 	return (
 		<>
 			<NavBar />
-			<div className="container mx-auto bg-background">
+			<div className="container mx-auto mt-4">
 				<Toaster />
 				<Outlet />
 			</div>

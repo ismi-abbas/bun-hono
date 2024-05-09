@@ -1,20 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-	Table,
-	TableCaption,
-	TableHeader,
-	TableRow,
-	TableHead,
-	TableBody,
-	TableCell,
-} from "@/components/ui/table";
+import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { toast, useToast } from "@/components/ui/use-toast";
 import { api } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/expenses")({
+export const Route = createFileRoute("/_authenticated/expenses")({
 	component: Expenses,
 });
 
@@ -65,6 +57,7 @@ function Expenses() {
 						<TableHead className="w-[100px]">Invoice</TableHead>
 						<TableHead>Title</TableHead>
 						<TableHead className="text-right">Amount</TableHead>
+						<TableHead className="text-right">Date</TableHead>
 						<TableHead className="text-right">Action</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -85,20 +78,14 @@ function Expenses() {
 										</TableCell>
 									</TableRow>
 								))
-						: data?.expenses.map(({ amount, id, title }) => (
+						: data?.expenses.map(({ amount, id, title, date }) => (
 								<TableRow key={id}>
 									<TableCell className="font-medium">{id}</TableCell>
 									<TableCell className="capitalize">{title}</TableCell>
 									<TableCell className="text-right">${amount}</TableCell>
-									<TableCell
-										className="text-right gap-2 flex justify-end"
-										align="right"
-									>
-										<Button
-											size="sm"
-											className="bg-rose-700 &:hover:bg-rose-800"
-											onClick={() => mutate(id.toString())}
-										>
+									<TableCell className="text-right">{date}</TableCell>
+									<TableCell className="text-right gap-2 flex justify-end" align="right">
+										<Button size="sm" className="bg-rose-700 &:hover:bg-rose-800" onClick={() => mutate(id.toString())}>
 											Delete
 										</Button>
 										<Button size="sm" className="bg-teal-700">

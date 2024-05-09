@@ -10,16 +10,13 @@ import type { Context } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { createFactory, createMiddleware } from "hono/factory";
 
-export const kindeClient = createKindeServerClient(
-	GrantType.AUTHORIZATION_CODE,
-	{
-		authDomain: env.KINDE_DOMAIN,
-		clientId: env.KINDE_CLIENT_ID,
-		clientSecret: env.KINDE_CLIENT_SECRET,
-		redirectURL: env.KINDE_REDIRECT_URI,
-		logoutRedirectURL: env.KINDE_LOGOUT_REDIRECT_URI,
-	}
-);
+export const kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
+	authDomain: env.KINDE_DOMAIN,
+	clientId: env.KINDE_CLIENT_ID,
+	clientSecret: env.KINDE_CLIENT_SECRET,
+	redirectURL: env.KINDE_REDIRECT_URI,
+	logoutRedirectURL: env.KINDE_LOGOUT_REDIRECT_URI,
+});
 
 export const sessionManager = (c: Context): SessionManager => ({
 	async getSessionItem(key: string) {
@@ -59,6 +56,7 @@ export const getUserMiddleware = createMiddleware<Env>(async (c, next) => {
 		const isAuthenticated = await kindeClient.isAuthenticated(manager);
 
 		if (!isAuthenticated) {
+			console.log("rerere");
 			return c.json(
 				{
 					error: "Not authenticated",
@@ -71,7 +69,7 @@ export const getUserMiddleware = createMiddleware<Env>(async (c, next) => {
 
 		await next();
 	} catch (error) {
-		console.error(error);
+		console.error("herereee");
 		return c.json({ error: "Unauthorized" }, 401);
 	}
 });

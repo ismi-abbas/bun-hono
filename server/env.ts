@@ -8,6 +8,7 @@ export const env = createEnv({
 		KINDE_CLIENT_SECRET: z.string(),
 		KINDE_REDIRECT_URI: z.string(),
 		KINDE_LOGOUT_REDIRECT_URI: z.string(),
+		DATABASE_URL: z.string(),
 	},
 
 	/**
