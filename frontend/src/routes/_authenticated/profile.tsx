@@ -44,7 +44,9 @@ export default function Profile() {
 				<p className="text-gray-500 dark:text-gray-400">{data?.user.email}</p>
 			</div>
 
-			<Button onClick={logout}>Logout</Button>
+			<Button onClick={logout} variant="destructive">
+				Logout
+			</Button>
 		</div>
 	);
 }

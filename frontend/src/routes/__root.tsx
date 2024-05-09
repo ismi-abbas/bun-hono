@@ -1,6 +1,6 @@
 import { createRootRouteWithContext, Link, Outlet } from "@tanstack/react-router";
 import "../index.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { QueryClient } from "@tanstack/react-query";
 

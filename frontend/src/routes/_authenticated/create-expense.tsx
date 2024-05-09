@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/lib/api";
+import { createExpense, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/lib/api";
 import { Label } from "@radix-ui/react-label";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { FieldApi, useForm } from "@tanstack/react-form";
@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast as sonnerToast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
 	component: CreateExpense,
@@ -31,6 +33,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 function CreateExpense() {
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const form = useForm({
 		defaultValues: {
@@ -39,16 +42,34 @@ function CreateExpense() {
 			date: new Date().toISOString(),
 		},
 		onSubmit: async ({ value }) => {
-			const res = await api.expenses.$post({
-				json: value,
-			});
-
-			if (!res.ok) {
-				console.log(await res.text());
-				throw new Error("Failed to create expense");
-			}
+			const existingExpenses = await queryClient.ensureQueryData(getAllExpensesQueryOptions);
 
 			navigate({ to: "/expenses" });
+
+			// loading state
+			queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {
+				expense: value,
+			});
+
+			try {
+				// success state
+				const newExpense = await createExpense(value);
+
+				queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, {
+					...existingExpenses,
+					expenses: [...existingExpenses.expenses, newExpense],
+				});
+
+				sonnerToast("Expense created", {
+					description: `Successfully created new expenses: ${newExpense.title}`,
+				});
+			} catch (error) {
+				sonnerToast("Error", {
+					description: "Failed to create expense",
+				});
+			} finally {
+				queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {});
+			}
 		},
 		validatorAdapter: zodValidator,
 	});
