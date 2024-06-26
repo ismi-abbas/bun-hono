@@ -20,6 +20,12 @@ const apiRoutes = app
 	.get("/health", async (c) => {
 		return c.json({ message: "Server is running" });
 	})
+	.post("/webhook", async (c) => {
+		const { transactionId } = await c.req.json();
+		// process the webhook
+		// change transaction status
+		return c.json({ message: "Webhook received", transactionId });
+	})
 	.route("/expenses", expensesRoute)
 	.route("/", authRoute);
 
