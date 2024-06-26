@@ -15,7 +15,13 @@ app.use("*", logger());
 // 		origin: "*",
 // 	})
 // );
-const apiRoutes = app.basePath("/api").route("/expenses", expensesRoute).route("/", authRoute);
+const apiRoutes = app
+	.basePath("/api")
+	.get("/health", async (c) => {
+		return c.json({ message: "Server is running" });
+	})
+	.route("/expenses", expensesRoute)
+	.route("/", authRoute);
 
 app.get("*", serveStatic({ root: "./frontend/dist" }));
 app.get("*", serveStatic({ path: "./frontend/dist/index.html" }));
